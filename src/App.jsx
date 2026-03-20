@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { getIdpList, getSession, refresh, sendFeedback } from './auth/auth'
-import Banner from './components/Banner';
 import idBadgeImg from './assets/id_badge.png';
+import IdCard from './components/IdCard';
 
 function App() {
   const [loadingSession, setLoadingSession] = useState(true);
@@ -106,9 +106,9 @@ function App() {
             {
               authenticated
               ? <div className="signInBox">
-                  <h2>Welcome {profile.alias}</h2>
-                  <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" />
-
+                  <h2>Welcome</h2>
+                  {/* <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" /> */}
+                  <IdCard profile={profile} onSignOut={onSignOut} />
                   {
                     feedbackSubmitted
                     ? <>

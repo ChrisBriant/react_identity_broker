@@ -6,7 +6,9 @@
   --tile-color : #ebeaea;
   --tile-color-highlighted : #fff;
   --tile-fg-color : #000;
-  --error-text-color : #90210d; 
+  --error-text-color : #90210d;
+  --id-card-color : #fff;
+  --id-card-text-color : #000;
   margin: 0 auto;
   text-align: center;
   width: 100%;
@@ -119,6 +121,28 @@ img {
 .idpTile .imageContainer {
   width: 40px;
   height: 40px;
+}
+
+.idCard {
+  display: flex;
+  flex-direction: row;
+  background: var(--id-card-color);
+  color: var(--id-card-text-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+}
+
+.idCard #idBadgeImg {
+  border-right: #000 solid 1px;
+  padding-right: 10px;
+}
+
+.idCard .userProfile {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* sign in area  */
