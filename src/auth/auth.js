@@ -1,7 +1,6 @@
 import { conn } from "../network/network";
 
 function getSession() {
-    console.log("CALLING SESSION");
     return new Promise( async (resolve,reject) => {
         const url = "/auth/session";
 
@@ -93,4 +92,18 @@ function sendFeedback(feedbackData) {
     });
 }
 
-export { getSession, refresh, signInFake, signOut, getIdpList, sendFeedback};
+function acceptTerms() {
+    return new Promise( async (resolve,reject) => {
+        const url = "/auth/acceptterms";
+        conn.post(url,{}, {withCredentials: true})
+        .then( (response) => {
+            console.log("RESPONSE", response.data);
+            return resolve(response.data);
+        }).catch((err) => {
+            console.error("ERROR REJECT",err);
+            return reject(err);
+        });
+    });
+}
+
+export { getSession, refresh, signInFake, signOut, getIdpList, sendFeedback, acceptTerms};

@@ -19,9 +19,8 @@ const AuthenticatedDisplay = ({
     const handleSubmitFeedback = async () => {
         console.log("SENDING", feedbackValue);
         try {
-        const res = await sendFeedback({ message : feedbackValue });
-        console.log("FEEDBACK SENT", res);
-        setFeedbackSubmitted(true);
+            await sendFeedback({ message : feedbackValue });
+            setFeedbackSubmitted(true);
         } catch(err) {
         console.error("An error occurred sending the feedback.", err.response.status);
         if(err.response.status === 401) {

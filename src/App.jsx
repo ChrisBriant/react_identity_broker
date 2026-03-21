@@ -5,6 +5,7 @@ import { getIdpList, getSession, refresh } from './auth/auth'
 // import IdCard from './components/IdCard';
 import AuthenticatedDisplay from './components/AuthenticatedDisplay';
 import SignInDisplay from './components/SignInDisplay';
+import TermsAndConditions from './components/TermsAndConditions';
 
 function App() {
   const [loadingSession, setLoadingSession] = useState(true);
@@ -114,62 +115,24 @@ function App() {
           : <>
             {
               authenticated
-              ? <AuthenticatedDisplay
-                    setAuthenticated={setAuthenticated}  
-                    setSessionRefresh={setSessionRefresh}
-                    profile={profile} 
-                    onSignOut={onSignOut}
-                    setFeedbackSubmitted={setFeedbackSubmitted}
-                    feedbackSubmitted={feedbackSubmitted}
-                    setFeedbackSubmittedError={setFeedbackSubmittedError}
-                    feedbackSubmittedError={feedbackSubmittedError}
-                /> 
-              // ? <div className="signInBox">
-              //     <h2>Welcome</h2>
-              //     {/* <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" /> */}
-              //     <IdCard profile={profile} onSignOut={onSignOut} />
-              //     {
-              //       feedbackSubmitted
-              //       ? <>
-              //         {
-              //           feedbackSubmittedError
-              //             ? <div className="feedbackError">
-              //               <p>Sorry, an error occurred submitting the feedback.</p>
-              //             </div>
-              //             : <div className="feedbackSuccess">
-              //               <p>Thank you! Constructive feedback is appreciated.</p>
-              //             </div>
-              //         }
-              //       </>
-              //       : <>
-              //         <p>I hope you like this demo.</p>
-              //         <label htmlFor='feedbackBox'>Post some feedback below:</label>
-              //         <textarea id="feedbackBox" name="feedbackBox" onChange={(evt) => setFeedbackValue(evt.currentTarget.value)}>
-
-              //         </textarea>
-              //         <button onClick={() => handleSubmitFeedback()} >Send Feedback</button>
-              //       </>
-              //     }
-              //   </div>
+              ? <> 
+                {
+                  profile.accepted_terms
+                  ? <AuthenticatedDisplay
+                      setAuthenticated={setAuthenticated}  
+                      setSessionRefresh={setSessionRefresh}
+                      profile={profile} 
+                      onSignOut={onSignOut}
+                      setFeedbackSubmitted={setFeedbackSubmitted}
+                      feedbackSubmitted={feedbackSubmitted}
+                      setFeedbackSubmittedError={setFeedbackSubmittedError}
+                      feedbackSubmittedError={feedbackSubmittedError}
+                  /> 
+                  : <TermsAndConditions setSessionRefresh={setSessionRefresh} />
+                }
+              
+              </>
               : <SignInDisplay handleSignIn={handleSignIn} idps={idps} />
-              // : <div className="signInBox">
-              //   <h2>Sign In</h2>
-              //   <div className="idp-selection">
-              //     {/* <button onClick={() => handleSignIn()}>
-              //       Sign In
-              //     </button> */}
-              //     {
-              //       idps.map((idp) => (
-              //         <div key={idp.id} className="idpTile" onClick={() => handleSignIn(idp.login)}>
-              //           <div className="imageContainer">
-              //             <img src={idp.logo} alt={idp.name} />
-              //           </div>
-              //           <p>Continue with {idp.name}</p>
-              //         </div>
-              //       ))
-              //     }
-              //   </div>
-              // </div>
             }
           </> 
         }
