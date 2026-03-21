@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { getIdpList, getSession, refresh, sendFeedback } from './auth/auth'
-import idBadgeImg from './assets/id_badge.png';
-import IdCard from './components/IdCard';
+import { getIdpList, getSession, refresh } from './auth/auth'
+// import idBadgeImg from './assets/id_badge.png';
+// import IdCard from './components/IdCard';
+import AuthenticatedDisplay from './components/AuthenticatedDisplay';
+import SignInDisplay from './components/SignInDisplay';
 
 function App() {
   const [loadingSession, setLoadingSession] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
   const [idps, setIdps] = useState([]);
-  const [feedbackValue, setFeedbackValue] = useState("");
+  //const [feedbackValue, setFeedbackValue] = useState("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [feedbackSubmittedError, setFeedbackSubmittedError] = useState(false);
+  const [sessionRefresh,setSessionRefresh] = useState(0);
+
+  console.log("MOUNTED");
 
   useEffect(() => {
     getSession().then((res) => {
@@ -50,7 +55,7 @@ function App() {
         });
       }
     });
-  }, [])
+  }, [sessionRefresh])
 
 
 
@@ -59,11 +64,6 @@ function App() {
     //window.location.href = "https://localhost:8000/auth/issuejwtredirect?id=1&idp=discord&alias=chinx";
     console.log("LOGIN", logonUrl);
     window.location.href = logonUrl;
-    // signInFake().then((res) => {
-    //   console.log("SIGN IN RESPONSE", res);
-    // }).then(err => {
-    //   console.log("SIGN IN ERROR", err);
-    // });
   }
 
   const onSignOut = async () => {
@@ -81,19 +81,28 @@ function App() {
     setProfile(null);
   }
 
-  const handleSubmitFeedback = async () => {
-    console.log("SENDING", feedbackValue);
-    try {
-      const res = await sendFeedback({ message : feedbackValue });
-      console.log("FEEDBACK SENT", res);
-      setFeedbackSubmitted(true);
-    } catch(err) {
-      console.error("An error occurred sending the feedback.", err);
-      //Display an error to the user
-      setFeedbackSubmittedError(true);
-      setFeedbackSubmitted(true);
-    }
-  }
+  // const handleSubmitFeedback = async () => {
+  //   console.log("SENDING", feedbackValue);
+  //   try {
+  //     const res = await sendFeedback({ message : feedbackValue });
+  //     console.log("FEEDBACK SENT", res);
+  //     setFeedbackSubmitted(true);
+  //   } catch(err) {
+  //     console.error("An error occurred sending the feedback.", err.response.status);
+  //     if(err.response.status === 401) {
+  //       //Refresh the session
+  //       setAuthenticated(false);
+  //       setSessionRefresh(prev => prev + 1);
+  //       setFeedbackSubmittedError(true);
+  //       setFeedbackSubmitted(true);
+  //     } else {
+  //       //Display an error to the user
+  //       setFeedbackSubmittedError(true);
+  //       setFeedbackSubmitted(true);
+  //     }
+
+  //   }
+  // }
 
   return (
     <div className='page'>
@@ -105,51 +114,62 @@ function App() {
           : <>
             {
               authenticated
-              ? <div className="signInBox">
-                  <h2>Welcome</h2>
-                  {/* <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" /> */}
-                  <IdCard profile={profile} onSignOut={onSignOut} />
-                  {
-                    feedbackSubmitted
-                    ? <>
-                      {
-                        feedbackSubmittedError
-                          ? <div className="feedbackError">
-                            <p>Sorry, an error occurred submitting the feedback.</p>
-                          </div>
-                          : <div className="feedbackSuccess">
-                            <p>Thank you! Constructive feedback is appreciated.</p>
-                          </div>
-                      }
-                    </>
-                    : <>
-                      <p>I hope you like this demo.</p>
-                      <label htmlFor='feedbackBox'>Post some feedback below:</label>
-                      <textarea id="feedbackBox" name="feedbackBox" onChange={(evt) => setFeedbackValue(evt.currentTarget.value)}>
+              ? <AuthenticatedDisplay
+                    setAuthenticated={setAuthenticated}  
+                    setSessionRefresh={setSessionRefresh}
+                    profile={profile} 
+                    onSignOut={onSignOut}
+                    setFeedbackSubmitted={setFeedbackSubmitted}
+                    feedbackSubmitted={feedbackSubmitted}
+                    setFeedbackSubmittedError={setFeedbackSubmittedError}
+                    feedbackSubmittedError={feedbackSubmittedError}
+                /> 
+              // ? <div className="signInBox">
+              //     <h2>Welcome</h2>
+              //     {/* <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" /> */}
+              //     <IdCard profile={profile} onSignOut={onSignOut} />
+              //     {
+              //       feedbackSubmitted
+              //       ? <>
+              //         {
+              //           feedbackSubmittedError
+              //             ? <div className="feedbackError">
+              //               <p>Sorry, an error occurred submitting the feedback.</p>
+              //             </div>
+              //             : <div className="feedbackSuccess">
+              //               <p>Thank you! Constructive feedback is appreciated.</p>
+              //             </div>
+              //         }
+              //       </>
+              //       : <>
+              //         <p>I hope you like this demo.</p>
+              //         <label htmlFor='feedbackBox'>Post some feedback below:</label>
+              //         <textarea id="feedbackBox" name="feedbackBox" onChange={(evt) => setFeedbackValue(evt.currentTarget.value)}>
 
-                      </textarea>
-                      <button onClick={() => handleSubmitFeedback()} >Send Feedback</button>
-                    </>
-                  }
-                </div>
-              : <div className="signInBox">
-                <h2>Sign In</h2>
-                <div className="idp-selection">
-                  {/* <button onClick={() => handleSignIn()}>
-                    Sign In
-                  </button> */}
-                  {
-                    idps.map((idp) => (
-                      <div key={idp.id} className="idpTile" onClick={() => handleSignIn(idp.login)}>
-                        <div className="imageContainer">
-                          <img src={idp.logo} alt={idp.name} />
-                        </div>
-                        <p>Continue with {idp.name}</p>
-                      </div>
-                    ))
-                  }
-                </div>
-              </div>
+              //         </textarea>
+              //         <button onClick={() => handleSubmitFeedback()} >Send Feedback</button>
+              //       </>
+              //     }
+              //   </div>
+              : <SignInDisplay handleSignIn={handleSignIn} idps={idps} />
+              // : <div className="signInBox">
+              //   <h2>Sign In</h2>
+              //   <div className="idp-selection">
+              //     {/* <button onClick={() => handleSignIn()}>
+              //       Sign In
+              //     </button> */}
+              //     {
+              //       idps.map((idp) => (
+              //         <div key={idp.id} className="idpTile" onClick={() => handleSignIn(idp.login)}>
+              //           <div className="imageContainer">
+              //             <img src={idp.logo} alt={idp.name} />
+              //           </div>
+              //           <p>Continue with {idp.name}</p>
+              //         </div>
+              //       ))
+              //     }
+              //   </div>
+              // </div>
             }
           </> 
         }
