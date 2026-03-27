@@ -12,12 +12,9 @@ const AuthenticatedDisplay = ({
         setFeedbackSubmittedError,
         feedbackSubmittedError
     }) => {
-    // const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-    // const [feedbackSubmittedError, setFeedbackSubmittedError] = useState(false);
     const [feedbackValue, setFeedbackValue] = useState("");
 
     const handleSubmitFeedback = async () => {
-        console.log("SENDING", feedbackValue);
         try {
             await sendFeedback({ message : feedbackValue });
             setFeedbackSubmitted(true);
@@ -37,11 +34,10 @@ const AuthenticatedDisplay = ({
 
         }
     }
-    console.log("AUTHENTICATED DISPLAY",profile);
+
     return (
         <div className="signInBox">
             <h2>Welcome</h2>
-            {/* <img id="idBadgeImg" src={idBadgeImg} alt="ID Badge Image" /> */}
             <IdCard profile={profile} onSignOut={onSignOut} />
             {
                 feedbackSubmitted

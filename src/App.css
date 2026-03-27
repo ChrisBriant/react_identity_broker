@@ -1,14 +1,14 @@
 #root {
   --background-color: #ffffff;
-  --banner-color : #164500;
+  --banner-color : #002845;
   --banner-fg-color : #fff;
   --card-color : #c7c7c7;
   --tile-color : #ebeaea;
   --tile-color-highlighted : #fff;
   --tile-fg-color : #000;
   --error-text-color : #90210d;
-  --id-card-color : #fff;
-  --id-card-text-color : #000;
+  --id-card-color : #317eff;
+  --id-card-text-color : #fff;
   margin: 0 auto;
   text-align: center;
   width: 100%;
@@ -40,11 +40,23 @@ img {
   background-color: var(--banner-color);
   color: var(--banner-fg-color);
   width: 100%;
+  height: 100px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
   max-width: 100vw;
   padding: 0 1rem;
+}
+
+#banner img {
+  width: 100px;
+  height: 90px;
+}
+
+#banner h1 {
+  width: 100%;
+  text-align: center;
 }
 
 #banner .signInOutArea {
@@ -134,7 +146,7 @@ img {
 }
 
 .idCard #idBadgeImg {
-  border-right: #000 solid 1px;
+  border-right: #fff solid 4px;
   padding-right: 10px;
 }
 
@@ -189,5 +201,20 @@ img {
 @media (max-width: 650px) {
   .signInBox {
     width: 100%;
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  #banner {
+    height: 140px;
+  }
+
+  .main {
+    min-height: 100%;
+    height: 100%;
   }
 }

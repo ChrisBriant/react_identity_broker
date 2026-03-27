@@ -3,9 +3,6 @@ const SignInDisplay = ({handleSignIn, idps}) => {
         <div className="signInBox">
             <h2>Sign In</h2>
             <div className="idp-selection">
-                {/* <button onClick={() => handleSignIn()}>
-                Sign In
-                </button> */}
                 {
                 idps.map((idp) => (
                     <div key={idp.id} className="idpTile" onClick={() => handleSignIn(idp.login)}>

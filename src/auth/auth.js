@@ -6,7 +6,6 @@ function getSession() {
 
         conn.get(url, {withCredentials: true})
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -22,7 +21,6 @@ function refresh() {
         //It sends null in the body because in this case we are using the cookie for authentication
         conn.post(url,{token:null}, {withCredentials: true})
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -37,7 +35,6 @@ function signOut() {
 
         conn.post(url, {}, {withCredentials: true})
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -52,7 +49,6 @@ function getIdpList() {
 
         conn.get(url)
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -68,7 +64,6 @@ function signInFake() {
 
         conn.get(url)
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -83,7 +78,6 @@ function sendFeedback(feedbackData) {
 
         conn.post(url,feedbackData, {withCredentials: true})
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);
@@ -97,7 +91,6 @@ function acceptTerms() {
         const url = "/auth/acceptterms";
         conn.post(url,{}, {withCredentials: true})
         .then( (response) => {
-            console.log("RESPONSE", response.data);
             return resolve(response.data);
         }).catch((err) => {
             console.error("ERROR REJECT",err);

@@ -4,10 +4,8 @@ const IdCard = ({profile, onSignOut}) => {
 
 
     const handleSignOut = async () => {
-        console.log("CLICKED");
         try {
             const signOutResponse = await onSignOut();
-            console.log("SIGN OUT RESPONSE", signOutResponse);
             onSignOut();
         } catch(err) {
             console.error("An error occurred during the sign out process.", err);
